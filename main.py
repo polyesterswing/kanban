@@ -1,5 +1,5 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Static, ListView, ListItem, Label, Header
+from textual.widgets import Static, ListView, ListItem, Label, Header, Footer, Input
 from textual.containers import VerticalScroll, HorizontalScroll, Horizontal, Vertical
 from textual.reactive import reactive
 from textual.message import Message
@@ -33,8 +33,12 @@ class Card(Label):
     def on_mouse_down(self, event) -> None:
         self.selected = True
 
+    def on_mount(self) -> None:
+        self.border_title = str(self.card.id)
+
     def compose(self) -> ComposeResult:
-        yield Label(self.card.text)
+        label = Label(self.card.text)
+        yield label
 
 class Column(VerticalScroll):
     cards = reactive([], recompose=True)
@@ -99,8 +103,10 @@ class Kanban(App):
         with HorizontalScroll():
                 for col, status in enumerate(self.data["statuses"]):
                     with VerticalScroll():
-                        yield Label(status["title"], classes="status")
+                        yield Label(str(col) + ' - ' + status["title"], classes="status")
                         yield Column(col, status["cards"])
+
+        yield Input(placeholder="Enter a command")
 
 if __name__ == "__main__":
     app = Kanban()
