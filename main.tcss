@@ -1,0 +1,42 @@
+#heading {
+    content-align: center bottom;
+    text-style: bold italic;
+    padding-bottom: 1;
+    padding-top: 1;
+}
+
+.col1 {
+    border: round blue;
+}
+
+.col2 {
+    border: round green;
+}
+
+.col3 {
+    border: round red;
+}
+
+.status {
+    border-bottom: solid white;
+    content-align: center middle;
+    text-style: italic;
+}
+
+.card {
+    padding: 1;
+}
+
+ListView {
+    height: 100%;
+    width: 1fr;
+    border: round green;
+}
+
+Column {
+    width: 1fr;
+}
+
+Label {
+    width: 1fr;
+}
