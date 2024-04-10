@@ -30,7 +30,6 @@
 
 .selected {
     border: solid white;
-    background: gray;
 }
 
 Column {

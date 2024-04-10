@@ -1,8 +1,21 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Static, ListView, ListItem, Label, Header
 from textual.containers import VerticalScroll, HorizontalScroll, Horizontal, Vertical
+from textual.reactive import reactive
 
 from textual.screen import Screen
+
+class Card(Label):
+    selected = reactive(False)
+
+    def on_mouse_down(self, event) -> None:
+        self.selected = not self.selected
+
+    def watch_selected(self, selected_value):
+        if selected_value:
+            self.add_class("selected")
+        else:
+            self.remove_class("selected")
 
 class Column(VerticalScroll):
     def __init__(self, color, cards):
@@ -12,7 +25,7 @@ class Column(VerticalScroll):
 
     def compose(self) -> ComposeResult:
         for card in self.cards:
-            yield Label(card, classes=f"card col{self.color} selected")
+            yield Card(card, classes=f"card col{self.color}")
 
 class Kanban(App):
     CSS_PATH = "main.tcss"
