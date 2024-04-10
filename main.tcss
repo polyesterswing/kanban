@@ -24,13 +24,13 @@
 }
 
 .card {
-    padding: 1;
+    padding-left: 1;
+    padding-right: 1;
 }
 
-ListView {
-    height: 100%;
-    width: 1fr;
-    border: round green;
+.selected {
+    border: solid white;
+    background: gray;
 }
 
 Column {

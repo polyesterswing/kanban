@@ -5,13 +5,14 @@ from textual.containers import VerticalScroll, HorizontalScroll, Horizontal, Ver
 from textual.screen import Screen
 
 class Column(VerticalScroll):
-    def __init__(self, color):
+    def __init__(self, color, cards):
         super().__init__()
         self.color = color
+        self.cards = cards
 
     def compose(self) -> ComposeResult:
-        for i in range(3):
-            yield Label("abc", classes=f"card col{self.color}")
+        for card in self.cards:
+            yield Label(card, classes=f"card col{self.color} selected")
 
 class Kanban(App):
     CSS_PATH = "main.tcss"
@@ -21,13 +22,13 @@ class Kanban(App):
         with HorizontalScroll():
             with VerticalScroll():
                 yield Label("Todo", classes="status")
-                yield Column(1)
+                yield Column(1, ["abc", "def", "ghi"])
             with VerticalScroll():
                 yield Label("In Progress", classes="status")
-                yield Column(2)
+                yield Column(2, ["adjkfjdafkdj adkjsafkjfkajskdajskdjfkasjdfkjsakfjdkjfkdjskfdj", "akdjfae", "adskurakj"])
             with VerticalScroll():
                 yield Label("Done", classes="status")
-                yield Column(3)
+                yield Column(3, ["djakfjd", "akdjf"])
 
 
 if __name__ == "__main__":
