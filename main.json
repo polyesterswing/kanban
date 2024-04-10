@@ -12,10 +12,6 @@
         {
             "title": "Done",
             "cards": ["aksjdf", "skajdfk", "skajfd"]
-        },
-        {
-            "title": "Test",
-            "cards": ["abc", "def", "ghi"]
         }
     ]
 }
