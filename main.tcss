@@ -5,15 +5,15 @@
     padding-top: 1;
 }
 
-.col1 {
+.col0 {
     border: round blue;
 }
 
-.col2 {
+.col1 {
     border: round green;
 }
 
-.col3 {
+.col2 {
     border: round red;
 }
 

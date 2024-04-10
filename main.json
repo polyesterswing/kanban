@@ -1,0 +1,21 @@
+{
+    "heading": "Kanban Board",
+    "statuses": [
+        {
+            "title": "Todo",
+            "cards": ["abc", "def"]
+        },
+        {
+            "title": "In-Progress",
+            "cards": ["akjskfj", "kadjskfjakfdjdfkj skdjf adskjafjdaskfdj", "ajf"]
+        },
+        {
+            "title": "Done",
+            "cards": ["aksjdf", "skajdfk", "skajfd"]
+        },
+        {
+            "title": "Test",
+            "cards": ["abc", "def", "ghi"]
+        }
+    ]
+}
