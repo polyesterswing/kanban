@@ -5,6 +5,18 @@
     padding-top: 1;
 }
 
+.high {
+    border: round red;
+}
+
+.medium {
+    border: round orange;
+}
+
+.low {
+    border: round white;
+}
+
 .col0 {
     border: round blue;
 }
@@ -29,7 +41,7 @@
 }
 
 .selected {
-    border: solid white;
+    border: solid gray;
 }
 
 Column {

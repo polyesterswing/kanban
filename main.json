@@ -3,15 +3,66 @@
     "statuses": [
         {
             "title": "Todo",
-            "cards": ["abc", "def"]
+            "cards": [
+                {
+                    "priority": 1,
+                    "text": "abc",
+                    "assignee": "Kurian",
+                    "reporter": ""
+                },
+                {
+                    "priority": 1,
+                    "text": "def",
+                    "assignee": "",
+                    "reporter": ""
+                }
+            ]
         },
         {
             "title": "In-Progress",
-            "cards": ["akjskfj", "kadjskfjakfdjdfkj skdjf adskjafjdaskfdj", "ajf"]
+            "cards": [
+                {
+                    "priority": 1,
+                    "text": "akjskfj",
+                    "assignee": "",
+                    "reporter": ""
+                },
+                {
+                    "priority": 1,
+                    "text": "kadjskfjakfdjdfkj skdjf adskjafjdaskfdj",
+                    "assignee": "",
+                    "reporter": ""
+                },
+                {
+                    "priority": 1,
+                    "text": "ajf",
+                    "assignee": "",
+                    "reporter": ""
+                }
+            ]
         },
         {
             "title": "Done",
-            "cards": ["aksjdf", "skajdfk", "skajfd"]
+            "cards": [
+                {
+                    "priority": 1,
+                    "text": "aksjdf",
+                    "assignee": "",
+                    "reporter": ""
+                },
+                {
+                    "priority": 0,
+                    "text": "skajdfk",
+                    "assignee": "",
+                    "reporter": ""
+                },
+                {
+                    "priority": 2,
+                    "text": "skajfd",
+                    "assignee": "",
+                    "reporter": ""
+                }
+            ]
         }
     ]
 }

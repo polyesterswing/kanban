@@ -14,11 +14,14 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class CardData():
     id: int
+    priority: int
     text: str
+    assignee: str
+    reporter: str
 
 class Card(Label):
     selected = reactive(False)
-    card = reactive(CardData(0, ""))
+    card = reactive(CardData(0, 2, "", "", ""))
 
     def __init__(self, card):
         super().__init__()
@@ -35,9 +38,29 @@ class Card(Label):
 
     def on_mount(self) -> None:
         self.border_title = str(self.card.id)
+        if self.card.priority == 0:
+            self.add_class("high")
+
+        if self.card.priority == 1:
+            self.add_class("medium")
+
+        if self.card.priority == 2:
+            self.add_class("low")
+
+        self.add_class("card")
 
     def compose(self) -> ComposeResult:
-        yield Label(self.card.text)
+        result = ""
+        if self.card.assignee:
+            result += f"[b]Assignee[/b]: {self.card.assignee}\n"
+
+        if self.card.reporter:
+            result += f"[b]Reporter[/b]: {self.card.reporter}\n"
+
+        result += "\n"
+
+        result += self.card.text
+        yield Label(result)
 
 class Column(VerticalScroll):
     cards = reactive([], recompose=True)
@@ -55,9 +78,7 @@ class Column(VerticalScroll):
 
     def compose(self) -> ComposeResult:
         for card in self.cards:
-            c = Card(card)
-            c.add_class("card", f"col{self.color % 3}")
-            yield c
+            yield Card(card)
 
     def on_mouse_up(self, event) -> None:
         try:
@@ -72,7 +93,7 @@ def process_data(data):
     for status in data["statuses"]:
         new_cards = []
         for card in status["cards"]:
-            new_cards.append(CardData(counter, card))
+            new_cards.append(CardData(counter, card["priority"], card["text"], card["assignee"], card["reporter"]))
             counter += 1
 
         status["cards"] = new_cards
@@ -88,14 +109,14 @@ def delete_card_by_id(data, id):
 def add_card_by_col_id(data, id, text, new_id):
     for idx, status in enumerate(data["statuses"]):
         if idx == id:
-            status["cards"].append(CardData(new_id, text))
+            status["cards"].append(CardData(new_id, 2, text, "", ""))
 
 def modify_card_by_id(data, id, text):
     for status in data["statuses"]:
         for idx, card in enumerate(status["cards"]):
             if card.id == id:
 
-                card_data = CardData(card.id, text)
+                card_data = CardData(card.id, card.priority, text, card.assignee, card.reporter)
                 status["cards"][idx] = card_data
 
 def add_status(data, name):
@@ -108,7 +129,20 @@ def swap_status(data, fro, to):
 
     data["statuses"][int(fro)] = to_status
     data["statuses"][int(to)] = fro_status
+
+def add_assignee(data, id, name):
+    for status in data["statuses"]:
+        for idx, card in enumerate(status["cards"]):
+            if card.id == id:
+                card_data = CardData(card.id, card.priority, card.text, name, card.reporter)
+                status["cards"][idx] = card_data
     
+def add_reporter(data, id, name):
+    for status in data["statuses"]:
+        for idx, card in enumerate(status["cards"]):
+            if card.id == id:
+                card_data = CardData(card.id, card.priority, card.text, card.assignee, name)
+                status["cards"][idx] = card_data
 
 class Kanban(App):
     CSS_PATH = "main.tcss"
@@ -141,6 +175,15 @@ class Kanban(App):
                 add_status(self.data, status_name)
             case ["swap_status", fro, to]:
                 swap_status(self.data, fro, to)
+            case ["add_assignee", card_id, text]:
+                add_assignee(self.data, int(card_id), text)
+            case ["remove_assignee", card_id]:
+                add_assignee(self.data, int(card_id), "")
+            case ["add_reporter", card_id, text]:
+                add_reporter(self.data, int(card_id), text)
+            case ["remove_reporter", card_id]:
+                add_reporter(self.data, int(card_id), "")
+
             case _:
                 pass
 
