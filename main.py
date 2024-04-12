@@ -9,19 +9,9 @@ from textual.screen import Screen
 
 import json
 
-from dataclasses import dataclass
-
-@dataclass(frozen=True)
-class CardData():
-    id: int
-    priority: int
-    text: str
-    assignee: str
-    reporter: str
-
 class Card(Label):
     selected = reactive(False)
-    card = reactive(CardData(0, 2, "", "", ""))
+    card = reactive({"id": 0, "priority": 2, "text": "", "assignee": "", "reporter": ""})
 
     def __init__(self, card):
         super().__init__()
@@ -37,29 +27,29 @@ class Card(Label):
         self.selected = True
 
     def on_mount(self) -> None:
-        self.border_title = str(self.card.id)
-        if self.card.priority == 0:
+        self.border_title = str(self.card["id"])
+        if self.card["priority"] == 0:
             self.add_class("high")
 
-        if self.card.priority == 1:
+        if self.card["priority"] == 1:
             self.add_class("medium")
 
-        if self.card.priority == 2:
+        if self.card["priority"] == 2:
             self.add_class("low")
 
         self.add_class("card")
 
     def compose(self) -> ComposeResult:
         result = ""
-        if self.card.assignee:
-            result += f"[b]Assignee[/b]: {self.card.assignee}\n"
+        if self.card["assignee"]:
+            result += f"[b]Assignee[/b]: {self.card['assignee']}\n"
 
-        if self.card.reporter:
-            result += f"[b]Reporter[/b]: {self.card.reporter}\n"
+        if self.card["reporter"]:
+            result += f"[b]Reporter[/b]: {self.card['reporter']}\n"
 
         result += "\n"
 
-        result += self.card.text
+        result += self.card["text"]
         yield Label(result)
 
 class Column(VerticalScroll):
@@ -93,7 +83,13 @@ def process_data(data):
     for status in data["statuses"]:
         new_cards = []
         for card in status["cards"]:
-            new_cards.append(CardData(counter, card["priority"], card["text"], card["assignee"], card["reporter"]))
+            abc = {}
+            abc["id"] = counter
+            abc["priority"] = card["priority"]
+            abc["text"] = card["text"]
+            abc["assignee"] = card["assignee"]
+            abc["reporter"] = card["reporter"]
+            new_cards.append(abc)
             counter += 1
 
         status["cards"] = new_cards
@@ -103,21 +99,26 @@ def process_data(data):
 def delete_card_by_id(data, id):
     for status in data["statuses"]:
         for idx, card in enumerate(status["cards"]):
-            if card.id == id:
+            if card["id"] == id:
                 status["cards"].pop(idx)
 
 def add_card_by_col_id(data, id, text, new_id):
     for idx, status in enumerate(data["statuses"]):
         if idx == id:
-            status["cards"].append(CardData(new_id, 2, text, "", ""))
+            new_card = {}
+            new_card["id"] = new_id
+            new_card["priority"] = 2
+            new_card["text"] = text
+            new_card["assignee"] = ""
+            new_card["reporter"] = ""
+
+            status["cards"].append(new_card)
 
 def modify_card_by_id(data, id, text):
     for status in data["statuses"]:
         for idx, card in enumerate(status["cards"]):
-            if card.id == id:
-
-                card_data = CardData(card.id, card.priority, text, card.assignee, card.reporter)
-                status["cards"][idx] = card_data
+            if card["id"] == id:
+                card["text"] = text
 
 def add_status(data, name):
     data["statuses"].append({"title": name, "cards": []})
@@ -133,16 +134,14 @@ def swap_status(data, fro, to):
 def add_assignee(data, id, name):
     for status in data["statuses"]:
         for idx, card in enumerate(status["cards"]):
-            if card.id == id:
-                card_data = CardData(card.id, card.priority, card.text, name, card.reporter)
-                status["cards"][idx] = card_data
+            if card["id"] == id:
+                card["assignee"] = name
     
 def add_reporter(data, id, name):
     for status in data["statuses"]:
         for idx, card in enumerate(status["cards"]):
-            if card.id == id:
-                card_data = CardData(card.id, card.priority, card.text, card.assignee, name)
-                status["cards"][idx] = card_data
+            if card["id"] == id:
+                card["reporter"] = name
 
 class Kanban(App):
     CSS_PATH = "main.tcss"
@@ -153,7 +152,7 @@ class Kanban(App):
     counter = process_data(data)
 
     def on_column_card_moved(self, message):
-        delete_card_by_id(self.data, message.fro.id)
+        delete_card_by_id(self.data, message.fro["id"])
 
         self.data["statuses"][message.to]["cards"].append(message.fro)
 
