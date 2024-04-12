@@ -4,6 +4,12 @@ This is a simple Kanban board implemented in Python. It allows users to manage t
 
 ![image](https://github.com/polyesterswing/kanban/assets/67583328/8d3fde5d-9363-4765-9aad-0a879e0ee503)
 
+## Requirements
+- Textual
+```
+pip install textual
+```
+
 ## Usage
 
 1. Run the application using `python main.py`.
