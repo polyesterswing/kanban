@@ -2,6 +2,8 @@
 
 This is a simple Kanban board implemented in Python. It allows users to manage tasks across different stages of completion using a command-line interface.
 
+![image](https://github.com/polyesterswing/kanban/assets/67583328/8d3fde5d-9363-4765-9aad-0a879e0ee503)
+
 ## Usage
 
 1. Run the application using `python main.py`.
