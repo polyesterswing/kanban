@@ -6,6 +6,7 @@ from textual.message import Message
 from textual.css.query import NoMatches
 
 from textual.screen import Screen
+from pathlib import Path
 
 import json
 
@@ -28,6 +29,9 @@ class Card(Label):
 
     def on_mount(self) -> None:
         self.border_title = str(self.card["id"])
+        self.add_class("card")
+
+    def compose(self) -> ComposeResult:
         if self.card["priority"] == 0:
             self.add_class("high")
 
@@ -37,9 +41,7 @@ class Card(Label):
         if self.card["priority"] == 2:
             self.add_class("low")
 
-        self.add_class("card")
 
-    def compose(self) -> ComposeResult:
         result = ""
         if self.card["assignee"]:
             result += f"[b]Assignee[/b]: {self.card['assignee']}\n"
@@ -143,11 +145,44 @@ def add_reporter(data, id, name):
             if card["id"] == id:
                 card["reporter"] = name
 
+def add_priority(data, id, priority):
+    for status in data["statuses"]:
+        for idx, card in enumerate(status["cards"]):
+            if card["id"] == id:
+                card["priority"] = priority
+
+def save_state(data, file):
+    f = open(file, 'w')
+    json.dump(data, f, indent=4)
+    f.close()
+
+def sort_by_priority(data, rev):
+    # 0 -> ascending, 1 -> descending
+    rev = False if rev == 0 else True
+    for status in data["statuses"]:
+        status["cards"].sort(key= lambda x: x["priority"], reverse = rev)
+
+def add_heading(data, name):
+    data["heading"] = name
+
 class Kanban(App):
     CSS_PATH = "main.tcss"
 
-    f = open("main.json")
-    data = json.load(f)
+    board_name = input("Enter the name of the board you wish to open: ")
+    file_name = board_name + ".json"
+
+    test = {"heading": "", "statuses": []}
+        
+    file_path = Path(file_name)
+    file_path.touch(exist_ok = True)
+    f = open(file_path, 'r+')
+
+    try:
+        data = json.load(f)
+    except json.JSONDecodeError:
+        json.dump(test, f, indent=4)
+        f.seek(0)
+        data = json.load(f)
 
     counter = process_data(data)
 
@@ -182,6 +217,30 @@ class Kanban(App):
                 add_reporter(self.data, int(card_id), text)
             case ["remove_reporter", card_id]:
                 add_reporter(self.data, int(card_id), "")
+            case ["add_priority", card_id, priority]:
+                add_priority(self.data, int(card_id), int(priority))
+            case ["save_state"]:
+                save_state(self.data, self.file_name)
+            case ["sort_priority", reverse]:
+                sort_by_priority(self.data, int(reverse))
+            case ["add_heading", name]:
+                add_heading(self.data, name)
+            case ["load_board", name]:
+                self.file_name = name + ".json"
+                test = {"heading": "", "statuses": []}
+                    
+                file_path = Path(self.file_name)
+                file_path.touch(exist_ok = True)
+                f = open(file_path, 'r+')
+
+                try:
+                    self.data = json.load(f)
+                except json.JSONDecodeError:
+                    json.dump(test, f, indent=4)
+                    f.seek(0)
+                    self.data = json.load(f)
+
+                self.counter = process_data(self.data)
 
             case _:
                 pass

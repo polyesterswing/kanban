@@ -1,16 +1,18 @@
 {
-    "heading": "Kanban Board",
+    "heading": "Kanban",
     "statuses": [
         {
             "title": "Todo",
             "cards": [
                 {
-                    "priority": 1,
+                    "id": 0,
+                    "priority": 0,
                     "text": "abc",
                     "assignee": "Kurian",
                     "reporter": ""
                 },
                 {
+                    "id": 1,
                     "priority": 1,
                     "text": "def",
                     "assignee": "",
@@ -22,18 +24,21 @@
             "title": "In-Progress",
             "cards": [
                 {
+                    "id": 2,
                     "priority": 1,
                     "text": "akjskfj",
                     "assignee": "",
                     "reporter": ""
                 },
                 {
+                    "id": 3,
                     "priority": 1,
                     "text": "kadjskfjakfdjdfkj skdjf adskjafjdaskfdj",
                     "assignee": "",
                     "reporter": ""
                 },
                 {
+                    "id": 4,
                     "priority": 1,
                     "text": "ajf",
                     "assignee": "",
@@ -45,18 +50,21 @@
             "title": "Done",
             "cards": [
                 {
+                    "id": 5,
                     "priority": 1,
                     "text": "aksjdf",
                     "assignee": "",
                     "reporter": ""
                 },
                 {
+                    "id": 6,
                     "priority": 0,
                     "text": "skajdfk",
                     "assignee": "",
                     "reporter": ""
                 },
                 {
+                    "id": 7,
                     "priority": 2,
                     "text": "skajfd",
                     "assignee": "",
