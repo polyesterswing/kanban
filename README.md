@@ -21,7 +21,7 @@ pip install textual
 2. `add_card <col_id> <text>`
 3. `modify_card <card_id> <text>`
 4. `add_status <name>`
-5. `add_status <status_id>`
+5. `delete_status <col_id>`
 6. `swap_status <col_id> <col_id>`
 7. `add_assignee <card_id> <name>`
 8. `add_reporter <card_id> <name>`
@@ -32,5 +32,3 @@ pip install textual
 13. `sort_priority <reverse>`
 14. `add_heading <heading>`
 15. `load_board <name>`
-
-
