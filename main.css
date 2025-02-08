@@ -44,6 +44,15 @@
     border: solid gray;
 }
 
+.error-popup {
+    background: red;
+    color: white;
+    padding: 1;
+    border: solid;
+    align: center middle;
+}
+
+
 Column {
     width: 1fr;
 }
