@@ -123,6 +123,14 @@ def modify_card_by_id(data, id, text):
 def add_status(data, name):
     data["statuses"].append({"title": name, "cards": []})
 
+def delete_status(data, index):
+    try:
+        removed_status = data["statuses"].pop(index)
+        print(f"Deleted status: {removed_status['title']}")
+    except IndexError:
+        print("Invalid index. No status deleted.")
+
+
 def swap_status(data, fro, to):
     statuses = data["statuses"]
     to_status = statuses[int(to)].copy()
@@ -213,6 +221,8 @@ class Kanban(App):
                 modify_card_by_id(self.data, int(card_id), text)
             case ["add_status", status_name]:
                 add_status(self.data, status_name)
+            case ["delete_status", col_id]:
+                delete_status(self.data, int(col_id))
             case ["swap_status", fro, to]:
                 swap_status(self.data, fro, to)
             case ["add_assignee", card_id, text]:
