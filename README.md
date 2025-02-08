@@ -21,18 +21,16 @@ pip install textual
 2. `add_card <col_id> <text>`
 3. `modify_card <card_id> <text>`
 4. `add_status <name>`
-5. `swap_status <col_id> <col_id>`
-6. `add_assignee <card_id> <name>`
-7. `add_reporter <card_id> <name>`
-8. `remove_reporter <card_id>`
-9. `remove_assignee <card_id>`
-10. `add_priority <card_id> <priority>`
-11. `save_state`
-12. `sort_priority <reverse>`
-13. `add_heading <heading>`
-14. `load_board <name>`
+5. `add_status <status_id>`
+6. `swap_status <col_id> <col_id>`
+7. `add_assignee <card_id> <name>`
+8. `add_reporter <card_id> <name>`
+9. `remove_reporter <card_id>`
+10. `remove_assignee <card_id>`
+11. `add_priority <card_id> <priority>`
+12. `save_state`
+13. `sort_priority <reverse>`
+14. `add_heading <heading>`
+15. `load_board <name>`
 
-## To-Do
-1. Indication when command is incorrect
-2. Help Menu, with information about all commands
 
