@@ -169,7 +169,15 @@ class Kanban(App):
     board_name = input("Enter the name of the board you wish to open: ")
     file_name = board_name + ".json"
 
-    test = {"heading": "", "statuses": []}
+    test = {
+    "heading": "",
+    "statuses": [
+        {"title": "To Do", "cards": []},
+        {"title": "In Progress", "cards": []},
+        {"title": "Done", "cards": []}
+    ]
+}
+
         
     file_path = Path(file_name)
     file_path.touch(exist_ok = True)
