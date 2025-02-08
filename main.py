@@ -214,8 +214,9 @@ class Kanban(App):
         match command:
             case ["delete_card", card_id]:
                 delete_card_by_id(self.data, int(card_id))
-            case ["add_card", col_id, text]:
-                add_card_by_col_id(self.data, int(col_id), text, self.counter)
+            case ["add_card", col_id, *text]:
+                card_text = " ".join(text)
+                add_card_by_col_id(self.data, int(col_id), card_text, self.counter)
                 self.counter += 1
             case ["modify_card", card_id, text]:
                 modify_card_by_id(self.data, int(card_id), text)
