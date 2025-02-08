@@ -41,7 +41,7 @@
 }
 
 .selected {
-    border: solid gray;
+    border: round gray;
 }
 
 .error-popup {
