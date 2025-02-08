@@ -4,10 +4,8 @@ from textual.containers import VerticalScroll, HorizontalScroll, Horizontal, Ver
 from textual.reactive import reactive
 from textual.message import Message
 from textual.css.query import NoMatches
-
 from textual.screen import Screen
 from pathlib import Path
-
 import json
 
 class Card(Label):

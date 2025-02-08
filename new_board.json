@@ -1,0 +1,44 @@
+{
+    "heading": "My Project",
+    "statuses": [
+      {
+        "title": "To Do",
+        "cards": [
+          {
+            "id": 0,
+            "priority": 1,
+            "text": "Fix bug in login system",
+            "assignee": "Alice",
+            "reporter": "Bob"
+          }
+        ]
+      },
+
+      {
+        "title": "Doing",
+        "cards": [
+          {
+            "id": 3,
+            "priority": 1,
+            "text": "Fix bug in signin system",
+            "assignee": "Alice",
+            "reporter": "Bob"
+          }
+        ]
+      },
+
+      {
+        "title": "Done",
+        "cards": [
+          {
+            "id": 2,
+            "priority": 1,
+            "text": "Fix bug in login system",
+            "assignee": "Alice",
+            "reporter": "Bob"
+          }
+        ]
+      }
+    ]
+  }
+  
