@@ -211,37 +211,76 @@ class Kanban(App):
         input = self.query_one(Input)
         command = input.value.split()
         input.value = ""
+
+        if not command:
+            return
+
         match command:
+            case ["help"]:
+                help_text = (
+                    "Available Commands:\n"
+                    "- delete_card <card_id>\n"
+                    "- add_card <col_id> <text>\n"
+                    "- modify_card <card_id> <text>\n"
+                    "- add_status <name>\n"
+                    "- delete_status <col_id>\n"
+                    "- swap_status <col_id> <col_id>\n"
+                    "- add_assignee <card_id> <name>\n"
+                    "- remove_assignee <card_id>\n"
+                    "- add_reporter <card_id> <name>\n"
+                    "- remove_reporter <card_id>\n"
+                    "- add_priority <card_id> <priority>\n"
+                    "- save_state\n"
+                    "- sort_priority <reverse>\n"
+                    "- add_heading <heading>\n"
+                    "- load_board <name>\n"
+                )
+                self.notify(help_text, title="Help Menu")
+
             case ["delete_card", card_id]:
                 delete_card_by_id(self.data, int(card_id))
+
             case ["add_card", col_id, *text]:
                 card_text = " ".join(text)
                 add_card_by_col_id(self.data, int(col_id), card_text, self.counter)
                 self.counter += 1
-            case ["modify_card", card_id, text]:
-                modify_card_by_id(self.data, int(card_id), text)
+
+            case ["modify_card", card_id, *text]:
+                modify_card_by_id(self.data, int(card_id), " ".join(text))
+
             case ["add_status", status_name]:
                 add_status(self.data, status_name)
+
             case ["delete_status", col_id]:
                 delete_status(self.data, int(col_id))
+
             case ["swap_status", fro, to]:
                 swap_status(self.data, fro, to)
-            case ["add_assignee", card_id, text]:
-                add_assignee(self.data, int(card_id), text)
+
+            case ["add_assignee", card_id, name]:
+                add_assignee(self.data, int(card_id), name)
+
             case ["remove_assignee", card_id]:
                 add_assignee(self.data, int(card_id), "")
-            case ["add_reporter", card_id, text]:
-                add_reporter(self.data, int(card_id), text)
+
+            case ["add_reporter", card_id, name]:
+                add_reporter(self.data, int(card_id), name)
+
             case ["remove_reporter", card_id]:
                 add_reporter(self.data, int(card_id), "")
+
             case ["add_priority", card_id, priority]:
                 add_priority(self.data, int(card_id), int(priority))
+
             case ["save_state"]:
                 save_state(self.data, self.file_name)
+
             case ["sort_priority", reverse]:
                 sort_by_priority(self.data, int(reverse))
-            case ["add_heading", name]:
-                add_heading(self.data, name)
+
+            case ["add_heading", *heading]:
+                add_heading(self.data, " ".join(heading))
+
             case ["load_board", name]:
                 self.file_name = name + ".json"
                 test = {"heading": "", "statuses": []}
@@ -260,9 +299,10 @@ class Kanban(App):
                 self.counter = process_data(self.data)
 
             case _:
-                pass
+                self.notify("Invalid command. Type 'help' for a list of available commands.", title="Error")
 
         self.refresh(layout=True, recompose=True)
+
 
     def compose(self) -> ComposeResult:
         yield Label(self.data["heading"], id="heading")
