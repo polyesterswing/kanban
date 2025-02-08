@@ -172,7 +172,7 @@ def add_heading(data, name):
     data["heading"] = name
 
 class Kanban(App):
-    CSS_PATH = "main.tcss"
+    CSS_PATH = "main.css"
 
     board_name = input("Enter the name of the board you wish to open: ")
     file_name = board_name + ".json"
